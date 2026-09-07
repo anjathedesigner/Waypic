@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Waypic">
+  <trk>
+    <name>Waitakere ridge</name>
+    <trkseg>
+      <trkpt lat="-36.9322" lon="174.5104"><ele>280</ele><time>2026-04-12T07:10:00Z</time></trkpt>
+      <trkpt lat="-36.9358" lon="174.5186"><ele>312</ele><time>2026-04-12T07:22:00Z</time></trkpt>
+      <trkpt lat="-36.9411" lon="174.5248"><ele>348</ele><time>2026-04-12T07:36:00Z</time></trkpt>
+      <trkpt lat="-36.9474" lon="174.5291"><ele>401</ele><time>2026-04-12T07:50:00Z</time></trkpt>
+      <trkpt lat="-36.9530" lon="174.5366"><ele>388</ele><time>2026-04-12T08:04:00Z</time></trkpt>
+      <trkpt lat="-36.9588" lon="174.5442"><ele>342</ele><time>2026-04-12T08:18:00Z</time></trkpt>
+      <trkpt lat="-36.9624" lon="174.5540"><ele>296</ele><time>2026-04-12T08:32:00Z</time></trkpt>
+      <trkpt lat="-36.9581" lon="174.5638"><ele>254</ele><time>2026-04-12T08:46:00Z</time></trkpt>
+      <trkpt lat="-36.9496" lon="174.5682"><ele>221</ele><time>2026-04-12T09:00:00Z</time></trkpt>
+      <trkpt lat="-36.9412" lon="174.5614"><ele>248</ele><time>2026-04-12T09:14:00Z</time></trkpt>
+      <trkpt lat="-36.9354" lon="174.5508"><ele>266</ele><time>2026-04-12T09:28:00Z</time></trkpt>
+      <trkpt lat="-36.9322" lon="174.5104"><ele>280</ele><time>2026-04-12T09:48:00Z</time></trkpt>
+    </trkseg>
+  </trk>
+</gpx>
