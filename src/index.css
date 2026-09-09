@@ -1054,6 +1054,15 @@ img {
   background: var(--background);
 }
 
+.route-card.is-exporting,
+.route-card.is-exporting.is-jpg,
+.route-card.is-exporting.is-nomap,
+.route-card.is-exporting .route-map,
+.route-card.is-exporting .maplibregl-map,
+.route-card.is-exporting .maplibregl-canvas-container {
+  background: transparent !important;
+}
+
 .route-svg,
 .route-map {
   position: absolute;

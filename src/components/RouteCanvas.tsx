@@ -27,7 +27,7 @@ const BLANK_MAP_STYLE = {
 };
 
 export type RouteCanvasHandle = {
-  settleForExport: (pixelRatio: number) => Promise<void>;
+  settleForExport: (pixelRatio: number) => Promise<HTMLCanvasElement | null>;
   restoreAfterExport: () => void;
 };
 
@@ -73,12 +73,13 @@ export const RouteCanvas = forwardRef<RouteCanvasHandle, {
       const map = mapRef.current;
       if (!map) {
         await new Promise<void>((r) => requestAnimationFrame(() => requestAnimationFrame(() => r())));
-        return;
+        return null;
       }
       mapPixelRatioRef.current = map.getPixelRatio();
       map.setPixelRatio(pixelRatio);
       map.resize();
       await waitMapIdle(map);
+      return snapshotMapCanvas(map);
     },
     restoreAfterExport() {
       const map = mapRef.current;
@@ -295,6 +296,34 @@ function waitMapIdle(map: MapLibreMap, ms = 8000) {
     };
     const timer = window.setTimeout(done, ms);
     map.once("idle", done);
+    map.triggerRepaint();
+  });
+}
+
+function copyCanvas(src: HTMLCanvasElement) {
+  if (!src.width || !src.height) return null;
+  const dst = document.createElement("canvas");
+  dst.width = src.width;
+  dst.height = src.height;
+  const ctx = dst.getContext("2d");
+  if (!ctx) return null;
+  ctx.drawImage(src, 0, 0);
+  return dst;
+}
+
+function snapshotMapCanvas(map: MapLibreMap) {
+  return new Promise<HTMLCanvasElement | null>((resolve) => {
+    let settled = false;
+    const finish = (shot: HTMLCanvasElement | null) => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timer);
+      map.off("render", grab);
+      resolve(shot);
+    };
+    const grab = () => finish(copyCanvas(map.getCanvas()));
+    const timer = window.setTimeout(grab, 2000);
+    map.once("render", grab);
     map.triggerRepaint();
   });
 }

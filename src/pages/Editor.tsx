@@ -103,8 +103,8 @@ export function Editor() {
     if (!node) throw new Error("missing canvas");
     const ratio = exportCaptureRatio(file.style.resolution, node.offsetWidth, node.offsetHeight);
     try {
-      await routeApi.current?.settleForExport(ratio);
-      return await nodeToBlob(node, file.style.format, ratio, file.style.fontFamily);
+      const mapSnapshot = (await routeApi.current?.settleForExport(ratio)) ?? null;
+      return await nodeToBlob(node, file.style.format, ratio, file.style.fontFamily, mapSnapshot);
     } finally {
       routeApi.current?.restoreAfterExport();
     }
