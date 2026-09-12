@@ -52,7 +52,7 @@ export function Select<T extends string>({
         className="select-trigger"
       >
         <span>{label}</span>
-        <ChevronDown size={24} color="var(--foregroundlight)" />
+        <ChevronDown size={20} strokeWidth={2} aria-hidden />
       </button>
       <AnimatePresence>
         {open ? (

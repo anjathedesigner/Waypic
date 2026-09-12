@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Loader, Sidebar } from "react-feather";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { RouteCanvas, type RouteCanvasHandle } from "../components/RouteCanvas";
 import { SlideDeck } from "../components/SlideDeck";
 import { Toolbar } from "../components/Toolbar";
@@ -165,14 +165,28 @@ export function Editor() {
 
   const many = readyFiles.length > 1;
   const editingAll = many && styleScope === "all";
-  const icon =
-    exporting === "busy" ? (
-      <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}>
-        <Loader size={16} />
-      </motion.span>
-    ) : exporting === "done" ? (
-      <Check size={16} />
-    ) : null;
+  const statusIcon = (
+    <AnimatePresence initial={false} mode="popLayout">
+      {exporting === "idle" ? null : (
+        <motion.span
+          key={exporting}
+          className="export-status-icon"
+          initial={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
+          transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+        >
+          {exporting === "busy" ? (
+            <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}>
+              <Loader size={16} strokeWidth={2} aria-hidden />
+            </motion.span>
+          ) : (
+            <Check size={16} strokeWidth={2} aria-hidden />
+          )}
+        </motion.span>
+      )}
+    </AnimatePresence>
+  );
 
   return (
     <div className="editor">
@@ -186,7 +200,7 @@ export function Editor() {
               aria-expanded={deckOpen}
               onClick={() => setDeckOpen((open) => !open)}
             >
-              <Sidebar size={16} color="var(--icon)" />
+              <Sidebar size={16} strokeWidth={2} aria-hidden />
             </button>
           ) : null}
           <button type="button" className="logo-btn" onClick={goHome}>
@@ -206,7 +220,7 @@ export function Editor() {
               <Button variant="outlined" onClick={exportOne} disabled={exporting === "busy"}>
                 {label && exporting !== "idle" ? (
                   <>
-                    {icon} {label}
+                    {statusIcon} {label}
                   </>
                 ) : (
                   "Export selected"
@@ -215,7 +229,7 @@ export function Editor() {
               <Button onClick={exportAll} disabled={exporting === "busy"}>
                 {label && exporting !== "idle" ? (
                   <>
-                    {icon} {label}
+                    {statusIcon} {label}
                   </>
                 ) : (
                   `Export all (${readyFiles.length}) .zip`
@@ -226,7 +240,7 @@ export function Editor() {
             <Button onClick={exportOne} disabled={exporting === "busy"}>
               {label && exporting !== "idle" ? (
                 <>
-                  {icon} {label}
+                  {statusIcon} {label}
                 </>
               ) : (
                 "Export"

@@ -22,7 +22,7 @@ export function Dropzone({ onFiles }: { onFiles: (files: FileList | File[]) => v
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
     >
-      <Download size={36} color="var(--foreground)" />
+      <Download size={36} strokeWidth={2} aria-hidden />
       <div>
         <h2>Drop one or more .gpx files here</h2>
         <div className="dropzone-desc">

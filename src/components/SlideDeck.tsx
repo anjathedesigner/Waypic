@@ -64,7 +64,7 @@ export function SlideDeck({
                   }
                 }}
               >
-                <X size={16} />
+                <X size={16} strokeWidth={2} aria-hidden />
               </span>
             </span>
           </motion.button>
@@ -72,7 +72,7 @@ export function SlideDeck({
       })}
       <button type="button" className="preview" onClick={() => input.current?.click()} aria-label="Add files">
         <span className="preview-add">
-          <Plus size={24} strokeWidth={2} color="var(--foregroundlight)" />
+          <Plus size={24} strokeWidth={2} aria-hidden />
         </span>
       </button>
       <input

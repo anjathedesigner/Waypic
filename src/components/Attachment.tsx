@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { X } from "react-feather";
 import { formatFileSize } from "../lib/geo";
 import type { RouteFile } from "../types";
@@ -6,13 +6,14 @@ import type { RouteFile } from "../types";
 export function Attachment({ file, onRemove }: { file: RouteFile; onRemove: () => void }) {
   const uploading = file.status === "uploading";
   const error = file.status === "error";
+  const reduce = useReducedMotion();
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: "auto" }}
-      exit={{ opacity: 0, height: 0 }}
-      transition={{ duration: 0.2 }}
+      initial={reduce ? false : { opacity: 0, y: 12, filter: "blur(4px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12, filter: "blur(4px)" }}
+      transition={{ duration: reduce ? 0 : 0.15, ease: "easeOut" }}
       className="attachment"
     >
       <div className="attachment-meta">
@@ -38,7 +39,7 @@ export function Attachment({ file, onRemove }: { file: RouteFile; onRemove: () =
         </div>
       </div>
       <button type="button" className="attachment-x" aria-label={`Remove ${file.filename}`} onClick={onRemove}>
-        <X size={24} color="var(--foreground)" />
+        <X size={20} strokeWidth={2} aria-hidden />
       </button>
     </motion.div>
   );

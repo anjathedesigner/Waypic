@@ -1,29 +1,36 @@
-import { motion, useReducedMotion } from "framer-motion";
-import type { ComponentProps, ReactNode } from "react";
+import { useReducedMotion } from "framer-motion";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { ArrowRight } from "react-feather";
 
 type Variant = "primary" | "outlined";
 
-interface Props extends ComponentProps<typeof motion.button> {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
   children: ReactNode;
   icon?: boolean;
+  static?: boolean;
 }
 
-export function Button({ variant = "primary", children, icon, className = "", ...rest }: Props) {
+export function Button({
+  variant = "primary",
+  children,
+  icon,
+  static: isStatic,
+  className = "",
+  type = "button",
+  ...rest
+}: Props) {
   const reduce = useReducedMotion();
+  const tap = !isStatic && !reduce;
   return (
-    <motion.button
-      type="button"
-      className={`btn ${variant === "primary" ? "btn-primary" : "btn-outlined"} ${className}`}
-      whileHover={reduce ? undefined : { scale: 1.02 }}
-      whileTap={reduce ? undefined : { scale: 0.97 }}
-      transition={{ duration: 0.14 }}
+    <button
+      type={type}
+      className={`btn ${variant === "primary" ? "btn-primary" : "btn-outlined"} ${icon ? "has-icon" : ""} ${tap ? "" : "is-static"} ${className}`.trim()}
       {...rest}
     >
       {children}
-      {icon ? <ArrowRight size={24} strokeWidth={2} /> : null}
-    </motion.button>
+      {icon ? <ArrowRight size={20} strokeWidth={2} aria-hidden /> : null}
+    </button>
   );
 }
 
@@ -31,25 +38,24 @@ export function CtaButton({
   children,
   onClick,
   disabled,
+  static: isStatic,
 }: {
   children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
+  static?: boolean;
 }) {
   const reduce = useReducedMotion();
+  const tap = !isStatic && !reduce;
   return (
-    <motion.button
+    <button
       type="button"
-      className="btn btn-cta"
-      initial={false}
-      whileHover={reduce ? undefined : { scale: 1.05 }}
-      whileTap={reduce ? undefined : { scale: 0.98 }}
-      transition={{ duration: 0.14 }}
+      className={`btn btn-cta has-icon ${tap ? "" : "is-static"}`}
       onClick={onClick}
       disabled={disabled}
     >
       {children}
-      <ArrowRight size={24} />
-    </motion.button>
+      <ArrowRight size={20} strokeWidth={2} aria-hidden />
+    </button>
   );
 }
